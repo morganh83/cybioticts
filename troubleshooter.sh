@@ -6,7 +6,7 @@
 # 2. Tests HTTPS connectivity to prod.cymbiotic.io (port 443)
 # 3. Tests SSH connectivity to bridge.cymbiotic.io on port 443
 # 4. Checks for DNS resolution errors via apt update and hostname consistency
-# 5. Calls the get_consultants API (if Cymbiotic is installed)
+# 5. Calls the API (if Cymbiotic is installed)
 
 # Color codes
 GREEN='\033[0;32m'
@@ -47,7 +47,7 @@ test_https() {
 }
 
 test_ssh() {
-    echo -e "\n${YELLOW}Testing SSH connectivity to bridge.cymbiotic.io on port 443...${NC}"
+    echo -e "\n${YELLOW}Testing SSH connectivity...${NC}"
     if ssh -o BatchMode=yes \
            -o ConnectTimeout=5 \
            -o StrictHostKeyChecking=no \
@@ -97,7 +97,6 @@ test_consultants_api() {
         return 0
     fi
 
-    # load API_HOST & API_AUTH_TOKEN
     api_host=$(sed -n 's/^API_HOST="\([^"]*\)"/\1/p' "$conf_file")
     api_token=$(sed -n 's/^API_AUTH_TOKEN="\([^"]*\)"/\1/p' "$conf_file")
     if [[ -z "$api_host" || -z "$api_token" ]]; then
